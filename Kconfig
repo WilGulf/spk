@@ -1,0 +1,9 @@
+mainmenu "SPK Configuration"
+
+menu "Package Manager"
+
+    config PACKAGE_BUILD_TOOLS
+        bool "Build tools for spk packages"
+        default n
+
+endmenu
