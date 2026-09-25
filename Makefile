@@ -1,18 +1,22 @@
-KCONFIG_MCONF = ./src/kconfig/output/bin/kconfig-mconf
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c17 -I./src
+CLIBS = -larchive
 
-$(KCONFIG_MCONF):
-	@echo "Bygger lokalt Kconfig-verktyg..."
-	cd src/kconfig && autoreconf -fi
-	cd src/kconfig && ./configure --enable-conf --enable-mconf --disable-shared --enable-static --prefix=$(shell pwd)/src/kconfig/output
-	$(MAKE) -C src/kconfig
-	$(MAKE) -C src/kconfig install
+TARGET = output/spk
 
-menuconfig: $(KCONFIG_MCONF)
-	$(KCONFIG_MCONF) Kconfig
+SRC = $(wildcard src/*.c) \
+      $(wildcard src/commands/*.c) \
+      $(wildcard src/package/*.c)
 
-all:
-	mkdir -p output
+OBJ = $(SRC:.c=.o)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	@mkdir -p output
+	$(CC) $(OBJ) -o $@ $(CLIBS)
 
 clean:
-	$(MAKE) -C src/kconfig clean
 	rm -rf output/*
+	rm -f src/*.o
+	rm -f src/*/*.o
