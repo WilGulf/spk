@@ -6,7 +6,8 @@ TARGET = output/spk
 
 SRC = $(wildcard src/*.c) \
       $(wildcard src/commands/*.c) \
-      $(wildcard src/package/*.c)
+      $(wildcard src/package/*.c) \
+	  $(wildcard src/tar/*.c)
 
 OBJ = $(SRC:.c=.o)
 

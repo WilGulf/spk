@@ -7,5 +7,6 @@
 
 size_t copy_file(FILE *src, FILE *dest, uint64_t total);
 void clean_string(char *buffer);
+int mkdir_p(const char *path, mode_t mode);
 
 #endif

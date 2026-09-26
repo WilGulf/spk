@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <getopt.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #include "package/package.h"
 #include "commands/commands.h"
@@ -14,6 +15,14 @@ void print_help(void) {
 
 void print_version(void) {
     
+}
+
+bool check_root(void) {
+    if (getuid()) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 int main(int argc, char **argv) {
@@ -27,22 +36,52 @@ int main(int argc, char **argv) {
     }
 
     if (!strcmp(argv[1], "extract")) {
+        if (!check_root()) {
+            printf("Please run extract with root privileges.\n");
+            return 0;
+        }
+
         if (!argv[2]) {
             print_help();
             return 0;
         }
         
-        extract_spk(argv[2]);
+        int res;
+        free(extract_spk(argv[2], &res));
+
+        if (res > 0) {
+            printf("EXTRACT ERR: %d\n", res);
+        }
         return 0;
     }
 
     if (!strcmp(argv[1], "create")) {
+        if (!check_root()) {
+            printf("Please run create with root privileges.\n");
+            return 0;
+        }
+
         if (!argv[2]) {
             print_help();
             return 0;
         }
 
         create_spk(argv[2]);
+        return 0;
+    }
+
+    if (!strcmp(argv[1], "install")) {
+        if (!check_root()) {
+            printf("Please run install with root privileges.\n");
+            return 0;
+        }
+
+        if (!argv[2]) {
+            print_help();
+            return 0;
+        }
+
+        install_cmd(argc - 1, argv + 1);
         return 0;
     }
 
