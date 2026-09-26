@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c17 -I./src
-CLIBS = -larchive
+CLIBS = -larchive -lcurl
 
 TARGET = output/spk
 

@@ -8,5 +8,7 @@
 #define ERR_MKDIR 3
 #define ERR_STAT 4
 #define ERR_MALLOC 5
+#define ERR_URL 6
+#define ERR_ARCHIVE 7
 
 #endif

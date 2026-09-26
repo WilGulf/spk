@@ -72,6 +72,16 @@ char *extract_spk(const char *spkpath, int *err_code) {
         *err_code = ERR_FOPEN;
         goto err_out;
     }
+
+    snprintf(path, sizeof(path), "%s/metadata", output);
+    FILE *metadata_out = fopen(path, "w");
+    if (!metadata_out) {
+        *err_code = ERR_FOPEN;
+        goto err_out;
+    } else {
+        fprintf(metadata_out, "name=%s\nversion=%s\n", metadata.name, metadata.version);
+        fclose(metadata_out);
+    }
     
     fseek(spk, header.map_offset, SEEK_SET);
     copy_file(spk, dest_out, header.map_size);
@@ -97,7 +107,11 @@ char *extract_spk(const char *spkpath, int *err_code) {
         *err_code = ERR_MKDIR;
         goto err_out;
     }
-    extract_archive(path, path_out);
+
+    if (extract_archive(path, path_out) != SPK_OK) {
+        *err_code = ERR_ARCHIVE;
+        goto out;
+    }
 
     *err_code = 0;
     goto out;

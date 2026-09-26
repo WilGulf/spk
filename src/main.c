@@ -10,12 +10,47 @@
 #include "commands/commands.h"
 #include "package/util.h"
 
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 0
+#define VERSION_PATCH 0
+
+#ifdef __i386__
+    #define ARCH "i386"
+#elif defined(__x86_64__)
+    #define ARCH "x86_64"
+#elif defined(__arm__)
+    #define ARCH "arm"
+#elif defined(__aarch64__)
+    #define ARCH "aarch64"
+#elif defined(__riscv)
+    #define ARCH "RISC-V"
+#elif defined(__powerpc__)
+    #define ARCH "PowerPC"
+#endif
+
 void print_help(void) {
-    
+    printf("Usage: spk COMMAND [options]\n");
+    putchar('\n');
+    printf("List of Main Commands:\n");
+    printf("    install <package> - Install package(s)\n");
+    printf("    remove <package>  - Remove installed package(s)\n");
+    printf("    update            - Update all repositories\n");
+    printf("    upgrade           - Upgrade installed packages\n");
+    printf("    search <query>    - Search for available package\n");
+    printf("    info <package>    - Show package information\n");
+    printf("    list              - List installed packages\n");
+    printf("    inspect <package> - List files installed by package\n");
+    printf("    setup             - Setup spk for this system\n");
+    putchar('\n');
+    printf("General spk options:\n");
+    printf("    -v, --version   Print spk version\n");
+    printf("    -h, --help      Print this help message\n");
+    printf("    -y, --yes       Automatically answer yes for all questions\n");
+    printf("    -f, --from-file Install package from local .spk file\n");
 }
 
 void print_version(void) {
-    
+    printf("spk version %d.%d.%d (%s)\n", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, ARCH);
 }
 
 bool check_root(void) {
@@ -87,6 +122,16 @@ int main(int argc, char **argv) {
         }
 
         install_cmd(argc - 1, argv + 1);
+        return 0;
+    }
+
+    if (!strcmp(argv[1], "setup")) {
+        if (!check_root()) {
+            printf("Please run setup with root privileges.\n");
+            return 0;
+        }
+
+        setup_spk();
         return 0;
     }
 

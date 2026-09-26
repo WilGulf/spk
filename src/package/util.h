@@ -8,6 +8,8 @@
 #include <sys/stat.h>
 
 size_t copy_file(FILE *src, FILE *dest, uint64_t total);
+int copy_recursive(const char *srcdir, const char *destdir);
+
 void clean_string(char *buffer);
 int mkdir_p(const char *path, mode_t mode);
 

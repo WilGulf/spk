@@ -4,6 +4,7 @@ RUN dnf install -y \
         gcc \
         make \
         libarchive-devel \
+        libcurl-devel \
         zstd \
         gdb \
     && dnf clean all
