@@ -12,6 +12,7 @@
 #include <limits.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
 size_t copy_file(FILE *src, FILE *dest, uint64_t total)
 {

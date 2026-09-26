@@ -8,6 +8,7 @@
 
 #include "package/package.h"
 #include "commands/commands.h"
+#include "package/util.h"
 
 void print_help(void) {
     
@@ -33,6 +34,10 @@ int main(int argc, char **argv) {
     if (!argv[1]) {
         print_version();
         return 0;
+    }
+
+    if (check_root()) {
+        mkdir_p("/etc/spk", 0755);
     }
 
     if (!strcmp(argv[1], "extract")) {
